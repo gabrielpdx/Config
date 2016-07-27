@@ -1,1 +1,1 @@
-# /Users/rosatikg Configuration
+# n[iu]x home configuration
