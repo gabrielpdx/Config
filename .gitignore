@@ -1,0 +1,9 @@
+# ignore everything
+*
+
+# except config
+!.gitignore
+!.bashrc
+!.emacs.d/
+!.emacs.d/init.el
+!README.md
