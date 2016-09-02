@@ -4,12 +4,14 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes (quote (misterioso)))
- '(inhibit-startup-screen t)
+ ;; '(inhibit-startup-screen t)
  '(package-selected-packages
    (quote
     (less-css-mode web-mode js2-mode helm-projectile helm-ls-hg company)))
  '(safe-local-variable-values (quote ((rsync-qk2 . t))))
  '(tool-bar-mode nil))
+
+;; (Global-set-key (kbd "M-;") 'comment-region)
 
 
 ;; declare directory local variable for rsync hook
@@ -33,6 +35,8 @@
 ;; (dolist (package package-list)
 ;;   (unless (package-installed-p package)
 ;;     (package-install package)))
+
+(setq backup-directory-alist `(("." . "~/.emacs-backups")))
 
 (set-default 'server-socket-dir "~/.emacs.d/server")
 (if (functionp 'window-system)
@@ -65,6 +69,7 @@
 ;; start in shell
 (shell "*shell*")
 (switch-to-buffer "*shell*")
+(delete-other-windows)
 
 ;; use spaces, not tabs
 ;; (setq-default indent-tabs-mode nil)
@@ -94,6 +99,9 @@
 (require 'groovy-mode)
 (add-to-list 'auto-mode-alist '("\\.groovy\\'" . groovy-mode))
 
+(add-to-list 'load-path "~/.emacs.d/elpa/web-mode-14")
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.gsp\\'" . web-mode))
 
 ;; Load MELPA packages
 (setq package-enable-at-startup nil)
@@ -142,6 +150,8 @@
 (add-hook 'after-init-hook 'global-company-mode)
 (setq company-idle-delay 0)
 (setq company-minimum-prefix-length 1)
+;; dabbrev backend downcases plaintext by default - BAD DABBREV
+(setq company-dabbrev-downcase nil)
 (require 'color)
 (let ((bg (face-attribute 'default :background)))
   (custom-set-faces
