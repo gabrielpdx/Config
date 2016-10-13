@@ -89,6 +89,8 @@
 (global-linum-mode t)
 (eval-after-load "linum"
   '(set-face-attribute 'linum nil :height 100))
+;; show column number at point
+(setq column-number-mode t)
 
 
 ;; PACKAGES
