@@ -24,17 +24,6 @@
 (setq package-archives
       '(("gnu"          . "http://elpa.gnu.org/packages/")
         ("melpa-stable" . "http://stable.melpa.org/packages/")))
-;(package-initialize)
-
-;; (or (file-exists-p package-user-dir)
-;;     (package-refresh-contents))
-
-;; (unless package-archive-contents
-;;   (package-refresh-contents))
-
-;; (dolist (package package-list)
-;;   (unless (package-installed-p package)
-;;     (package-install package)))
 
 (setq backup-directory-alist `(("." . "~/.emacs-backups")))
 
@@ -44,12 +33,14 @@
            (>= emacs-major-version 24))
     (server-start)))
 
+
 ;; OSX ONLY
 ;; When opened in Finder, manually set $PATH and exec-path per .bashrc
 (if (not (getenv "TERM_PROGRAM"))
    (setenv "PATH"
            (shell-command-to-string "source $HOME/.bashrc && printf $PATH")))
 (setq exec-path (split-string (getenv "PATH") ":"))
+
 
 ;; stacktrace for errors
 (setq debug-on-error t)
@@ -120,6 +111,13 @@
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (helm-mode 1)
 
+;; helm in eshell
+(add-hook 'eshell-mode-hook
+          (lambda ()
+            (eshell-cmpl-initialize)
+            (define-key eshell-mode-map [remap eshell-pcomplete] 'helm-esh-pcomplete)
+            (define-key eshell-mode-map (kbd "M-p") 'helm-eshell-history)))
+
 ;; helm + projectile
 (require 'projectile)
 (projectile-global-mode)
@@ -162,3 +160,8 @@
    `(company-scrollbar-fg ((t (:background ,(color-lighten-name bg 5)))))
    `(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
    `(company-tooltip-common ((t (:inherit font-lock-constant-face))))))
+
+ (add-hook 'eshell-mode-hook
+        (lambda ()
+          (set (make-local-variable 'company-backends)
+               '((company-shell company-eshell-history)))))
