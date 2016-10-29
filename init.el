@@ -11,8 +11,7 @@
  '(safe-local-variable-values (quote ((rsync-qk2 . t))))
  '(tool-bar-mode nil))
 
-;; (Global-set-key (kbd "M-;") 'comment-region)
-
+(require 'package)
 
 ;; declare directory local variable for rsync hook
 (defvar rsync-qk2 nil)
@@ -22,8 +21,10 @@
 
 (setq package-list '(helm helm-config projectile helm-projectile org web-mode color))
 (setq package-archives
-      '(("gnu"          . "http://elpa.gnu.org/packages/")
-        ("melpa-stable" . "http://stable.melpa.org/packages/")))
+      '(("gnu"          . "https://elpa.gnu.org/packages/")
+        ("melpa-stable" . "https://stable.melpa.org/packages/")))
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
 (setq backup-directory-alist `(("." . "~/.emacs-backups")))
 
@@ -84,18 +85,6 @@
 (setq column-number-mode t)
 
 
-;; PACKAGES
-(add-to-list 'load-path "~/.emacs.d/elpa/less-css-mode-0.20")
-(require 'less-css-mode)
-
-(add-to-list 'load-path "~/.emacs.d/elpa/groovy-mode-1.0.1")
-(require 'groovy-mode)
-(add-to-list 'auto-mode-alist '("\\.groovy\\'" . groovy-mode))
-
-(add-to-list 'load-path "~/.emacs.d/elpa/web-mode-14")
-(require 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.gsp\\'" . web-mode))
-
 ;; Load MELPA packages
 (setq package-enable-at-startup nil)
 (package-initialize)
@@ -128,16 +117,6 @@
 (global-set-key (kbd "C-x g") 'helm-projectile-grep)
 (global-set-key (kbd "C-x e") 'helm-projectile-find-other-file)
 
-;(setq projectile-globally-ignored-directories "-$HOME")
-
-
-;; org-mode
-(require 'org)
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-
-;; web-mode
-(add-to-list 'load-path "~/.emacs.d/elpa/web-mode-14")
-(require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
 (setq web-mode-markup-indent-offset 2)
 (setq web-mode-css-indent-offset 2)
