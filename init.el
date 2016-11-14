@@ -1,3 +1,12 @@
+;; rectangle copy (read-only)
+;; from https://www.emacswiki.org/emacs/RectangleCommands
+(defun my-copy-rectangle (start end)
+	"Copy the region-rectangle instead of `kill-rectangle'."
+	(interactive "r")
+	(setq killed-rectangle (extract-rectangle start end)))
+
+(global-set-key (kbd "C-x r w") 'my-copy-rectangle)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -18,6 +27,10 @@
 (add-hook 'after-save-hook
           (lambda () (when rsync-qk2 (shell-command (getenv "RSYNC_COMMAND")))))
 
+(defvar use-just-tabs nil)
+;; (when use-just-tabs ((setq-default indent-tabs-mode t)
+;; 		     (setq-default tab-width 2)
+;; 		     (defvaralias 'c-basic-offset 'tab-width)))
 
 (setq package-list '(helm helm-config projectile helm-projectile org web-mode color))
 (setq package-archives
@@ -64,17 +77,26 @@
 (delete-other-windows)
 
 ;; use spaces, not tabs
-;; (setq-default indent-tabs-mode nil)
+;; (setq-default indent-tabs-mode t)
 ;; (setq-default tab-width 2)
-;; (setq-default js-indent-level 2)
+(setq-default js-indent-level 2)
 ;; (setq-default c-default-style "linux"
 ;;               c-basic-offset 4)
+
+;; (setq-default indent-tabs-mode t)
+;; (setq-default tab-width 2)
+
+(setq-default indent-tabs-mode t
+							tab-width 2)
+							;; c-continued-statement-offset 'tab-width)
+(defvaralias 'c-basic-offset 'tab-width)
 
 ;; ask before closing emacs
 (setq confirm-kill-emacs 'yes-or-no-p)
 
-
-;; PRESENTATION
+;;;;;;;;;;;;;;;;;;
+;; PRESENTATION ;;
+;;;;;;;;;;;;;;;;;;
 ;; 12pt default font face
 (set-face-attribute 'default nil :font "Monaco 14")
 ;; line numbers - display and fix size
@@ -84,6 +106,7 @@
 ;; show column number at point
 (setq column-number-mode t)
 
+(add-to-list 'auto-mode-alist '("\\.org\\'" . visual-line-mode))
 
 ;; Load MELPA packages
 (setq package-enable-at-startup nil)
