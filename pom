@@ -1,0 +1,3 @@
+#!/bin/bash
+date "+🍅  %H:%M:%S" && sleep 1500 && osascript -e 'display notification with title "🙏"' && sleep 300 && osascript -e 'display notification with title "💪"' &
+disown
