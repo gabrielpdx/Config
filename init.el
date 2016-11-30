@@ -12,6 +12,8 @@
 	(get-buffer-create "pom")
 	(switch-to-buffer-other-frame "pom")
 	(insert (concat "🍅 " (substring (current-time-string) 11 19) "\n"))
+	(run-at-time "1 sec" nil 'insert "one second!\n")
+	(run-at-time "5 sec" nil 'insert "five seconds!\n")
 	)
 
 (custom-set-variables
