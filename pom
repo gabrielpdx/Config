@@ -1,3 +1,5 @@
 #!/bin/bash
-date "+🍅  %H:%M:%S" && sleep 1500 && osascript -e 'display notification with title "🙏"' && sleep 300 && osascript -e 'display notification with title "💪"' &
-disown
+date "+🍅  %H:%M:%S" && sleep 1500 && osascript -e 'display notification with title "🙏"' && date "+🙏  %H:%M:%S" && sleep 300 && osascript -e 'display notification with title "💪"' && date "+💪  %H:%M:%S" &
+# read -p "Enter IP address: " -e -i 192.168.0.4 IP
+# echo $IP
+# disown

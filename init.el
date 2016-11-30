@@ -4,8 +4,15 @@
 	"Copy the region-rectangle instead of `kill-rectangle'."
 	(interactive "r")
 	(setq killed-rectangle (extract-rectangle start end)))
-
 (global-set-key (kbd "C-x r w") 'my-copy-rectangle)
+
+(defun pom ()
+	"Use the pomodoro method."
+	(interactive)
+	(get-buffer-create "pom")
+	(switch-to-buffer-other-frame "pom")
+	(insert (concat "🍅 " (substring (current-time-string) 11 19) "\n"))
+	)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
