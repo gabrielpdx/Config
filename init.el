@@ -9,11 +9,17 @@
 (defun pom ()
 	"Use the pomodoro method."
 	(interactive)
-	(get-buffer-create "pom")
 	(switch-to-buffer-other-frame "pom")
-	(insert (concat "🍅 " (substring (current-time-string) 11 19) "\n"))
-	(run-at-time "1 sec" nil 'insert "one second!\n")
-	(run-at-time "5 sec" nil 'insert "five seconds!\n")
+
+	(let* ((focusFor  (* 60 25))
+				 (relaxFor  (* 60  5))
+				 (startAt  (current-time))
+				 (breakAt  (time-add startAt (seconds-to-time focusFor)))
+				 (resumeAt (time-add breakAt (seconds-to-time relaxFor))))
+
+		(insert (concat "🍅 " (format-time-string "%H:%M" startAt) "\n"))
+		(run-at-time breakAt nil 'insert (concat "🙏 " (format-time-string "%H:%M" breakAt) "\n"))
+		(run-at-time resumeAt nil 'insert (concat "💪 " (format-time-string "%H:%M" resumeAt) "\n")))
 	)
 
 (custom-set-variables
