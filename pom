@@ -1,5 +1,45 @@
 #!/bin/bash
-date "+🍅  %H:%M:%S" && sleep 1500 && osascript -e 'display notification with title "🙏"' && date "+🙏  %H:%M:%S" && sleep 300 && osascript -e 'display notification with title "💪"' && date "+💪  %H:%M:%S" &
-# read -p "Enter IP address: " -e -i 192.168.0.4 IP
-# echo $IP
-# disown
+WORK_FOR=2
+REST_FOR=1
+
+POMODORO="🍅"
+REST="🙏"
+WORK="💪"
+
+if [[ ( -z "$poms" ) || ( $poms -eq 4 ) ]]
+then
+		poms=0
+fi
+
+setRestLength() {
+		((poms++))
+		if [ $poms -eq 4 ]
+		then
+				REST_FOR=4
+		else
+				REST_FOR=2
+		fi
+}
+
+kernel=$(uname)
+if [ $kernel = "Linux" ]
+then
+		echo "I'd just like to interject..."
+		# freedom
+elif [ $kernel = "Darwin" ]
+then
+		osascript -e 'display notification with title "🍅"'
+		sleep $WORK_FOR
+		osascript -e 'display notification with title "🙏"'
+		setRestLength
+		echo "$REST_FOR"
+		sleep $REST_FOR
+		osascript -e 'display notification with title "💪"'
+else
+		date "+🍅  %H:%M:%S"
+		sleep $WORK_FOR
+		date "+🙏  %H:%M:%S"
+		setRestLength
+		sleep $REST_FOR
+		date "+💪  %H:%M:%S"		
+fi

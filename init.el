@@ -1,3 +1,5 @@
+(setq environment (shell-command-to-string "uname"))
+
 ;; rectangle copy (read-only)
 ;; from https://www.emacswiki.org/emacs/RectangleCommands
 (defun my-copy-rectangle (start end)
@@ -6,21 +8,44 @@
 	(setq killed-rectangle (extract-rectangle start end)))
 (global-set-key (kbd "C-x r w") 'my-copy-rectangle)
 
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; Pomodoro technique ;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+(setq pomodori 0)
 (defun pom ()
 	"Use the pomodoro method."
 	(interactive)
-	(switch-to-buffer-other-frame "pom")
 
-	(let* ((focusFor  (* 60 25))
-				 (relaxFor  (* 60  5))
+	(defun startMacProcess (timeToRun processName emoji)
+		"Notify via Applescript"
+		(async-start-process processName "/usr/bin/osascript" nil
+												 "-e" (concat "display notification with title \""
+																			emoji
+																			"\" "
+																			"subtitle \""
+																			(format-time-string "%H:%M" timeToRun)
+																			(concat " + poms = " (number-to-string pomodori))
+																			"\"")))
+
+	(when (string-equal environment "Darwin") (fset 'startProcess 'startMacProcess))
+	
+	(defun notify (timeToRun processName emoji accounting)
+		"Notify with the emoji at the timeToRun"
+		(run-at-time timeToRun
+								 nil
+								 'startMacProcess timeToRun processName emoji)
+		(when accounting (run-at-time timeToRun nil 'accounting)))
+	
+	(let* ((focusFor (* 60 25))
+				 (relaxFor (cond ((= pomodori 3) (* 60  15))
+												 (t (* 60  5))))
 				 (startAt  (current-time))
 				 (breakAt  (time-add startAt (seconds-to-time focusFor)))
 				 (resumeAt (time-add breakAt (seconds-to-time relaxFor))))
 
-		(insert (concat "🍅 " (format-time-string "%H:%M" startAt) "\n"))
-		(run-at-time breakAt nil 'insert (concat "🙏 " (format-time-string "%H:%M" breakAt) "\n"))
-		(run-at-time resumeAt nil 'insert (concat "💪 " (format-time-string "%H:%M" resumeAt) "\n")))
-	)
+		(notify startAt "pomodoro" "🍅" nil)
+		(notify breakAt "relax" "🙏" (setq pomodori (+ 1 pomodori)))
+		(notify resumeAt "resume" "💪" (when (= 4 pomodori) (setq pomodori 0)))))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -121,7 +146,8 @@
 ;; show column number at point
 (setq column-number-mode t)
 
-(add-to-list 'auto-mode-alist '("\\.org\\'" . visual-line-mode))
+;; Word wrap for all text-mode files (org, etc.)
+(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 
 ;; Load MELPA packages
 (setq package-enable-at-startup nil)
