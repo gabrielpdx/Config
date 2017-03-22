@@ -27,11 +27,22 @@ font pango:monospace 8
 # font, it doesn’t scale on retina/hidpi displays.
 
 # set the background
-exec --no-startup-id feh --bg-scale /home/gabe/Pictures/stadt-la.jpg
+exec --no-startup-id feh --bg-scale /home/gabe/Pictures/1489853736375.jpg
 
 # focus color
-# class        border  backgr. text    indicator child_border
-client.focused #260E2F #AC3BD4 #ffffff #DC99F4   #DC99F4
+# class    border  backgr. text    indicator child_border
+client.focused #013366 #FEFD03 #013366 #FEFD03   #FEFD03
+
+###########
+# Whitman #
+###########
+# Navy #013366
+# Gold #FEFD03
+
+
+###########
+# PURPLES #
+###########
 # darkest #260E2F
 # dark #AC3BD4
 # light #DC99F4
@@ -51,13 +62,13 @@ bindsym $mod+x move workspace to output DP1
 bindsym $mod+e exec emacs
 
 # start brave
-bindsym $mod+b exec brave
+bindsym $mod+b exec brave --ignore-gpu-blacklist
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec gnome-terminal #i3-sensible-terminal
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -152,26 +163,26 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
+    # These bindings trigger as soon as you enter the resize mode
 
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
+    # Pressing left will shrink the window’s width.
+    # Pressing right will grow the window’s width.
+    # Pressing up will shrink the window’s height.
+    # Pressing down will grow the window’s height.
+    bindsym j resize shrink width 10 px or 10 ppt
+    bindsym k resize grow height 10 px or 10 ppt
+    bindsym l resize shrink height 10 px or 10 ppt
+    bindsym semicolon resize grow width 10 px or 10 ppt
 
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
+    # same bindings, but for the arrow keys
+    bindsym Left resize shrink width 10 px or 10 ppt
+    bindsym Down resize grow height 10 px or 10 ppt
+    bindsym Up resize shrink height 10 px or 10 ppt
+    bindsym Right resize grow width 10 px or 10 ppt
 
-        # back to normal: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
 }
 
 bindsym $mod+r mode "resize"
@@ -179,6 +190,14 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status
-        tray_output primary
+    colors {
+    background #000000
+    focused_workspace  #013366 #FEFD03 #013366
+    active_workspace   #333333 #5f676a #ffffff
+    inactive_workspace #333333 #222222 #888888
+    urgent_workspace   #2f343a #900000 #ffffff
+    }
+    
+    status_command i3status
+    tray_output primary
 }
