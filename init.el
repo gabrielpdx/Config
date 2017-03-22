@@ -52,6 +52,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error]) 
  '(custom-enabled-themes (quote (misterioso)))
  ;; '(inhibit-startup-screen t)
  '(package-selected-packages
@@ -117,18 +119,11 @@
 (delete-other-windows)
 
 ;; use spaces, not tabs
-;; (setq-default indent-tabs-mode t)
-;; (setq-default tab-width 2)
+(setq-default indent-tabs-mode nil)
 (setq-default js-indent-level 2)
 ;; (setq-default c-default-style "linux"
 ;;               c-basic-offset 4)
 
-;; (setq-default indent-tabs-mode t)
-;; (setq-default tab-width 2)
-
-(setq-default indent-tabs-mode t
-							tab-width 2)
-							;; c-continued-statement-offset 'tab-width)
 (defvaralias 'c-basic-offset 'tab-width)
 
 ;; ask before closing emacs
@@ -138,7 +133,7 @@
 ;; PRESENTATION ;;
 ;;;;;;;;;;;;;;;;;;
 ;; 12pt default font face
-(set-face-attribute 'default nil :font "Monaco 14")
+(set-face-attribute 'default nil :font "Monospace 18")
 ;; line numbers - display and fix size
 (global-linum-mode t)
 (eval-after-load "linum"
