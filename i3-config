@@ -64,6 +64,9 @@ bindsym $mod+e exec emacs
 # start brave
 bindsym $mod+b exec brave --ignore-gpu-blacklist
 
+# start chromium
+bindsym $mod+c exec chromium-browser --ignore-gpu-blacklist
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
