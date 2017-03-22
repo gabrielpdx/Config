@@ -7,3 +7,8 @@ alias hgee="hg branches && hg status"
 
 alias wot="grep -e '^alias' $HOME/.bashrc && grep -e '^alias' $HOME/Config/bash"
 
+function dis() {
+    source $HOME/Config/setd.sh
+    $HOME/Config/addd.sh $1
+}
+
