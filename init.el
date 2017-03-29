@@ -53,13 +53,15 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
-   [default default default italic underline success warning error]) 
+   [default default default italic underline success warning error])
  '(custom-enabled-themes (quote (misterioso)))
- ;; '(inhibit-startup-screen t)
  '(package-selected-packages
    (quote
     (less-css-mode web-mode js2-mode helm-projectile helm-ls-hg company)))
- '(safe-local-variable-values (quote ((rsync-qk2 . t))))
+ '(safe-local-variable-values
+   (quote
+    ((RSYNC_COMMAND . "rsync -rltv --delete --exclude=.hg --exclude=out --exclude=target --exclude=build /home/gabe/Projects/qk2/ /nfs/rkgd/qk2/")
+     (rsync-qk2 . t))))
  '(tool-bar-mode nil))
 
 (require 'package)
@@ -67,12 +69,7 @@
 ;; declare directory local variable for rsync hook
 (defvar rsync-qk2 nil)
 (add-hook 'after-save-hook
-          (lambda () (when rsync-qk2 (shell-command (getenv "RSYNC_COMMAND")))))
-
-(defvar use-just-tabs nil)
-;; (when use-just-tabs ((setq-default indent-tabs-mode t)
-;; 		     (setq-default tab-width 2)
-;; 		     (defvaralias 'c-basic-offset 'tab-width)))
+          (lambda () (when rsync-qk2 (shell-command RSYNC_COMMAND))))
 
 (setq package-list '(helm helm-config projectile helm-projectile org web-mode color))
 (setq package-archives
@@ -121,10 +118,6 @@
 ;; use spaces, not tabs
 (setq-default indent-tabs-mode nil)
 (setq-default js-indent-level 2)
-;; (setq-default c-default-style "linux"
-;;               c-basic-offset 4)
-
-(defvaralias 'c-basic-offset 'tab-width)
 
 ;; ask before closing emacs
 (setq confirm-kill-emacs 'yes-or-no-p)
@@ -133,7 +126,7 @@
 ;; PRESENTATION ;;
 ;;;;;;;;;;;;;;;;;;
 ;; 12pt default font face
-(set-face-attribute 'default nil :font "Monospace 18")
+(set-face-attribute 'default nil :font "Monospace 12") ; 18
 ;; line numbers - display and fix size
 (global-linum-mode t)
 (eval-after-load "linum"
