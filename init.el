@@ -3,49 +3,10 @@
 ;; rectangle copy (read-only)
 ;; from https://www.emacswiki.org/emacs/RectangleCommands
 (defun my-copy-rectangle (start end)
-	"Copy the region-rectangle instead of `kill-rectangle'."
-	(interactive "r")
-	(setq killed-rectangle (extract-rectangle start end)))
+  "Copy the region-rectangle instead of `kill-rectangle'."
+  (interactive "r")
+  (setq killed-rectangle (extract-rectangle start end)))
 (global-set-key (kbd "C-x r w") 'my-copy-rectangle)
-
-;;;;;;;;;;;;;;;;;;;;;;;;
-;; Pomodoro technique ;;
-;;;;;;;;;;;;;;;;;;;;;;;;
-(setq pomodori 0)
-(defun pom ()
-	"Use the pomodoro method."
-	(interactive)
-
-	(defun startMacProcess (timeToRun processName emoji)
-		"Notify via Applescript"
-		(async-start-process processName "/usr/bin/osascript" nil
-												 "-e" (concat "display notification with title \""
-																			emoji
-																			"\" "
-																			"subtitle \""
-																			(format-time-string "%H:%M" timeToRun)
-																			(concat " + poms = " (number-to-string pomodori))
-																			"\"")))
-
-	(when (string-equal environment "Darwin") (fset 'startProcess 'startMacProcess))
-	
-	(defun notify (timeToRun processName emoji accounting)
-		"Notify with the emoji at the timeToRun"
-		(run-at-time timeToRun
-								 nil
-								 'startMacProcess timeToRun processName emoji)
-		(when accounting (run-at-time timeToRun nil 'accounting)))
-	
-	(let* ((focusFor (* 60 25))
-				 (relaxFor (cond ((= pomodori 3) (* 60  15))
-												 (t (* 60  5))))
-				 (startAt  (current-time))
-				 (breakAt  (time-add startAt (seconds-to-time focusFor)))
-				 (resumeAt (time-add breakAt (seconds-to-time relaxFor))))
-
-		(notify startAt "pomodoro" "🍅" nil)
-		(notify breakAt "relax" "🙏" (setq pomodori (+ 1 pomodori)))
-		(notify resumeAt "resume" "💪" (when (= 4 pomodori) (setq pomodori 0)))))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -60,9 +21,12 @@
     (less-css-mode web-mode js2-mode helm-projectile helm-ls-hg company)))
  '(safe-local-variable-values
    (quote
-    ((RSYNC_COMMAND . "rsync -rltv --delete --exclude=.hg --exclude=out --exclude=target --exclude=build /home/gabe/Projects/qk2/ /nfs/rkgd/qk2/")
+    ((RSYNC_COMMAND . "rsync -rltv --delete --exclude=.hg --exclude=out --exclude=target --exclude=build /home/gabe/Projects/qk2/ /nfs/rkgd/qk2/ &")
      (rsync-qk2 . t))))
- '(tool-bar-mode nil))
+ '(tool-bar-mode nil)
+ '(menu-bar-mode nil) 
+ '(toggle-scroll-bar nil)
+ )
 
 (require 'package)
 
@@ -83,15 +47,15 @@
 (set-default 'server-socket-dir "~/.emacs.d/server")
 (if (functionp 'window-system)
     (when (and (window-system)
-           (>= emacs-major-version 24))
-    (server-start)))
+               (>= emacs-major-version 24))
+      (server-start)))
 
 
 ;; OSX ONLY
 ;; When opened in Finder, manually set $PATH and exec-path per .bashrc
 (if (not (getenv "TERM_PROGRAM"))
-   (setenv "PATH"
-           (shell-command-to-string "source $HOME/.bashrc && printf $PATH")))
+    (setenv "PATH"
+            (shell-command-to-string "source $HOME/.bashrc && printf $PATH")))
 (setq exec-path (split-string (getenv "PATH") ":"))
 
 
@@ -144,7 +108,7 @@
 ;; helm
 (require 'helm)
 (require 'helm-config)
-;(require 'helm-ls-hg)
+                                        ;(require 'helm-ls-hg)
 ;; use helm for M-x
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
@@ -192,7 +156,47 @@
    `(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
    `(company-tooltip-common ((t (:inherit font-lock-constant-face))))))
 
- (add-hook 'eshell-mode-hook
-        (lambda ()
-          (set (make-local-variable 'company-backends)
-               '((company-shell company-eshell-history)))))
+(add-hook 'eshell-mode-hook
+          (lambda ()
+            (set (make-local-variable 'company-backends)
+                 '((company-shell company-eshell-history)))))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; Pomodoro technique ;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+(setq pomodori 0)
+(defun pom ()
+  "Use the pomodoro method."
+  (interactive)
+
+  (defun startMacProcess (timeToRun processName emoji)
+    "Notify via Applescript"
+    (async-start-process processName "/usr/bin/osascript" nil
+                         "-e" (concat "display notification with title \""
+                                      emoji
+                                      "\" "
+                                      "subtitle \""
+                                      (format-time-string "%H:%M" timeToRun)
+                                      (concat " + poms = " (number-to-string pomodori))
+                                      "\"")))
+
+  (when (string-equal environment "Darwin") (fset 'startProcess 'startMacProcess))
+  
+  (defun notify (timeToRun processName emoji accounting)
+    "Notify with the emoji at the timeToRun"
+    (run-at-time timeToRun
+                 nil
+                 'startMacProcess timeToRun processName emoji)
+    (when accounting (run-at-time timeToRun nil 'accounting)))
+  
+  (let* ((focusFor (* 60 25))
+         (relaxFor (cond ((= pomodori 3) (* 60  15))
+                         (t (* 60  5))))
+         (startAt  (current-time))
+         (breakAt  (time-add startAt (seconds-to-time focusFor)))
+         (resumeAt (time-add breakAt (seconds-to-time relaxFor))))
+
+    (notify startAt "pomodoro" "🍅" nil)
+    (notify breakAt "relax" "🙏" (setq pomodori (+ 1 pomodori)))
+    (notify resumeAt "resume" "💪" (when (= 4 pomodori) (setq pomodori 0)))))
