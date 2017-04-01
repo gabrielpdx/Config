@@ -32,7 +32,7 @@
 ;;  Presentation  ;;
 ;;;;;;;;;;;;;;;;;;;;
 
-(let* ((height 120))
+(let* ((height default-line-height))
   (require 'color)
   (defalias 'lighten (apply-partially 'color-lighten-name
                                       (face-attribute 'default :background)))

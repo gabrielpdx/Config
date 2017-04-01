@@ -1,7 +1,7 @@
 printf "source $HOME/Config/ba.sh\n" >> $HOME/.bashrc
 
 mkdir $HOME/.emacs.d/
-touch $HOME/.emacs.d/local.el
+printf "(setq default-line-height 140)\n" > $HOME/.emacs.d/local.el
 ln -s $HOME/Config/init.el $HOME/.emacs.d/init.el
 
 mkdir -p $HOME/.config/i3/
