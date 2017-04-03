@@ -4,7 +4,7 @@ alias f="find . -iname"
 alias notes="cd $HOME/Notes/"
 alias movgif="ffmpeg -i in.mov -s 600x400 -r 10 -f gif - | gifsicle --optimize=3 --delay=3 > out.gif"
 alias hgee="hg branches && hg status"
-alias dpi="gsettings set org.gnome.desktop.interface scaling-factor"
+alias gis="gsettings set org.gnome.desktop.interface scaling-factor"
 
 HISTIGNORE="hig*:history"
 

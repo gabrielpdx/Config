@@ -13,7 +13,8 @@
                       '(menu-bar-mode nil)
                       '(tool-bar-mode nil)
                       '(scroll-bar-mode nil)
-                      '(backup-directory-alist '(("." . "$HOME/.emacs-backups/")))
+                      '(backup-directory-alist '(("." . (shell-command-to-string
+                                                         "echo -n $HOME/.emacs-backups"))))
                       '(package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
                                            ("melpa-stable" . "https://stable.melpa.org/packages/")))
                       '(indent-tabs-mode nil ["default"])
